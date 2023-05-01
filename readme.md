@@ -4,7 +4,8 @@ Subdirectory:
 
 ```sh
 .
-├── bcbcpy
+├── src
+│   └── bcbcpy
 └── tuto
 ```
 
@@ -18,7 +19,7 @@ The goal of this BootCamp is to cover the following
   - Module
 - Random topics for math students
 
-## [`bcbcpy`](./bcbcpy/) package
+## [`bcbcpy`](./scr/bcbcpy/) package
 
 ## [`tuto`](./tuto/)
 
