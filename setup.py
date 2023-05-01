@@ -7,6 +7,7 @@ with open("LICENSE") as f:
 
 setup(
     name="BootCamp-BlockChain-and-Python",
+    version="0.1",
     description="A standalone crypto & blockchain demo package on python.",
     long_description=long_description,
     author="Heritiana Daniel, Andriasolofo",
