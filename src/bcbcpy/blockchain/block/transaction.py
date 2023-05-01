@@ -7,13 +7,15 @@ from bcbcpy.crypto import Key
 from bcbcpy.utils import obj2txt
 
 
+from datetime import datetime
+
 __all__ = ["TransactionData", "TransactionBlock"]
 
 
 class TransactionData:
     def __init__(
         self,
-        coins: float,
+        assets: float,
         sender: Node,
         receiver_id: str,
         receiver_pub: Key,
@@ -22,7 +24,7 @@ class TransactionData:
     ):
         self.prev_block = prev_block
         self.__make_data_dict(
-            coins,
+            assets,
             sender,
             receiver_id,
             receiver_pub,
@@ -32,7 +34,7 @@ class TransactionData:
 
     def __make_data_dict(
         self,
-        coins: float,
+        assets: float,
         sender: Node,
         receiver_id: str,
         receiver_pub: Key,
@@ -40,12 +42,13 @@ class TransactionData:
         transaction_message: str,
     ):
         self.data_dict = {
+            "timestamp": datetime.now().isoformat(),
             "sender_id": sender.id,
             "receiver_id": receiver_id,
-            "amount": coins,
+            "assets": assets,
             "prev_hash": prev_hash,
             "sender_confirmation": self.__sender_signature(
-                sender, coins, receiver_pub, prev_hash, transaction_message
+                sender, assets, receiver_pub, prev_hash, transaction_message
             ),
         }
 
@@ -62,14 +65,14 @@ class TransactionData:
     def __sender_signature(
         self,
         sender: Node,
-        coins: float,
+        assets: float,
         receiver_pub: Key,
         prev_hash: str,
         transaction_message: str,
     ):
         dict_contract = {
             "prev_hash": prev_hash,
-            "value": coins,
+            "value": assets,
             "receiver_pub_key_value": receiver_pub.key_value,
             "transaction message": sender.encrypt(
                 message=transaction_message, key=receiver_pub
