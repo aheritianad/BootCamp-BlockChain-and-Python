@@ -17,7 +17,8 @@ class CesarKey(SymmetricKey):
     def __repr__(self):
         return f"CesarKey({self._first.key_value}, {self._BaseKeys__sec.key_value})"
 
-    def compute_inverse(self, key_value: int):
+    @classmethod
+    def compute_inverse(cls, key_value: int):
         new_value = -key_value
         return new_value
 

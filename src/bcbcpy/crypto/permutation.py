@@ -20,7 +20,8 @@ class PermutationKey(SymmetricKey):
             f"PermutationKey({self._first.key_value}, {self._BaseKeys__sec.key_value})"
         )
 
-    def compute_inverse(self, key_value: Tuple[int, ...]):
+    @classmethod
+    def compute_inverse(cls, key_value: Tuple[int, ...]):
         new_value = [0] * len(key_value)
         for i, image in enumerate(key_value):
             new_value[image - 1] = i + 1

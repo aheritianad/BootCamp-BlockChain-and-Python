@@ -70,7 +70,8 @@ class SymmetricKey(BaseKeys):
         else:
             return f"{self.__class__.__name__}({self._first.key_value}, {self__sec_key_value})"
 
-    def compute_inverse(self, key_value: Any):
+    @classmethod
+    def compute_inverse(cls, key_value: Any):
         return key_value
 
     @staticmethod
