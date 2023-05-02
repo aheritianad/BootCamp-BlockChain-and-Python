@@ -21,7 +21,7 @@ class Node(_Node):
         )
         return trans_data
 
-    def make_transaction_data(
+    def make_transaction_block(
         self,
         assets: float,
         to: "Node",

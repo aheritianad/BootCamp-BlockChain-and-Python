@@ -1,7 +1,7 @@
 from bcbcpy import __author__
 
 
-from bcbcpy.blockchain.block import BaseBlock, Block
+from bcbcpy.blockchain.block import Block
 from bcbcpy.node import Node
 from bcbcpy.crypto import Key
 from bcbcpy.utils import obj2txt
@@ -19,7 +19,7 @@ class TransactionData:
         sender: Node,
         receiver_id: str,
         receiver_pub: Key,
-        prev_block: BaseBlock,
+        prev_block: Block,
         transaction_message: str = "",
     ):
         self.prev_block = prev_block
@@ -72,10 +72,10 @@ class TransactionData:
     ):
         dict_contract = {
             "prev_hash": prev_hash,
-            "value": assets,
+            "assets": assets,
             "receiver_pub_key_value": receiver_pub.key_value,
-            "transaction message": sender.encrypt(
-                message=transaction_message, key=receiver_pub
+            "transaction_message": sender.sends(
+                message=transaction_message, _to=receiver_pub
             ),
         }
 
@@ -94,7 +94,9 @@ class TransactionData:
 
 
 class TransactionBlock(Block):
-    def __init__(self, transaction_data: TransactionData, next_difficulty: int = 4):
+    def __init__(
+        self, transaction_data: TransactionData, next_difficulty: int | None = None
+    ):
         super().__init__(
             data=transaction_data.data,
             prev_block=transaction_data["prev_block"],
