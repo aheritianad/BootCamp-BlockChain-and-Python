@@ -19,8 +19,11 @@ The goal of this BootCamp is to cover the following
   - Module
 - Random topics for math students
 
-## [`bcbcpy`](./scr/bcbcpy/) package
+## [`bcbcpy`][bcbcpy]package
 
-## [`tuto`](./tuto/)
+## [`tuto`][tuto]
 
 ## Author
+
+[bcbcpy]: https://github.com/aheritianad/BootCamp-BlockChain-and-Python/blob/main/scr/bcbcpy
+[tuto]: https://github.com/aheritianad/BootCamp-BlockChain-and-Python/tree/main/tuto

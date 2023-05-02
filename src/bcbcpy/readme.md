@@ -10,7 +10,9 @@ bcbcpy
 │   ├── block
 │   │   ├── block
 │   │   └── transaction
-│   └── chain
+│   ├── chain
+│   ├── node
+│   └── typings
 ├── crypto
 │   ├── cesar
 │   ├── hash
@@ -22,7 +24,8 @@ bcbcpy
 │   └── prime
 ├── functional
 │   └── math
-│       └── arithmetic
+│      └── arithmetic
 ├── node
+├── setup
 └── utils
 ```
