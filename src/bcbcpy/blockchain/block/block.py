@@ -1,22 +1,36 @@
 from bcbcpy import __author__
 
 
-from bcbcpy.crypto import hash_nonce_initializer, hash_function, is_valid_hash
+from bcbcpy.crypto import hash_function, is_valid_hash
 from bcbcpy.utils import obj2txt
 
 
-__all__ = ["InitialBlock", "BaseBlock", "Block", "MultipleBlocks"]
+__all__ = ["InitialBlock", "Block", "MultipleBlocks"]
 
 
 class BaseBlock:
-    def __init__(self, data: str = "", difficulty: int = 4, init: bool = True):
-        if init:
-            self.prev_hash = ""
-            self.data = data
-            self._hash, self._nonce = hash_nonce_initializer(
-                data, difficulty=difficulty
-            )
-            self.next_difficulty = difficulty
+    def __init__(
+        self,
+        data: str = "",
+        prev_block: "BaseBlock | None" = None,
+        difficulty: int = 4,
+        next_difficulty: int | None = None,
+    ):
+        self._nonce = 0
+        self.data = data
+        self.prev_block = prev_block
+        self.difficulty = difficulty
+
+        if next_difficulty is None:
+            next_difficulty = difficulty
+
+        self.next_difficulty = next_difficulty
+
+    @property
+    def prev_hash(self):
+        if self.prev_block is None:
+            return ""
+        return self.prev_block.hash
 
     def __repr__(self):
         return obj2txt(
@@ -34,46 +48,10 @@ class BaseBlock:
 
     @property
     def hash(self) -> str:
-        return self._hash
+        return hash_function(self.data, self.prev_hash, nonce=self.nonce)
 
     def is_valid(self):
-        raise NotImplementedError
-
-    def _get_hash_for_a_given_nonce(self, nonce: int):
-        self._hash = hash_function(self.prev_hash, self.data, nonce=nonce)
-        return self._hash
-
-    def __str__(self):
-        return obj2txt({"data": self.data, "hash": self.hash})
-
-
-class InitialBlock(BaseBlock):
-    def __init__(self, initial_data: str = "", difficulty: int = 4):
-        super().__init__(initial_data, difficulty, True)
-
-    def is_valid(self):
-        return True
-
-
-class Block(BaseBlock):
-    def __init__(self, data: str, prev_block: BaseBlock, next_difficulty: int = 4):
-        super().__init__(init=False)
-        assert prev_block.is_valid(), "Previous Block must be a valid block."
-        self.data = data
-        self.prev_block = prev_block
-        self.next_difficulty = next_difficulty
-        self._nonce = 0
-        self._hash = self._get_hash_for_a_given_nonce(self._nonce)
-
-    @property
-    def prev_hash(self):
-        return self.prev_block.hash
-
-    def is_valid(self):
-        return is_valid_hash(
-            hash_value=self._get_hash_for_a_given_nonce(self.nonce),
-            difficulty=self.prev_block.next_difficulty,
-        )
+        return is_valid_hash(self.hash, self.difficulty)
 
     def mine(self):
         self._nonce = 0
@@ -81,7 +59,29 @@ class Block(BaseBlock):
             if self.is_valid():
                 break
             self._nonce += 1
-        return self._hash
+
+
+class InitialBlock(BaseBlock):
+    def __init__(
+        self,
+        initial_data: str = "",
+        difficulty: int = 4,
+        next_difficulty: int | None = None,
+    ):
+        super().__init__(
+            data=initial_data,
+            prev_block=None,
+            difficulty=difficulty,
+            next_difficulty=next_difficulty,
+        )
+        self.mine()
+
+
+class Block(BaseBlock):
+    def __init__(
+        self, data: str, prev_block: BaseBlock, next_difficulty: int | None = None
+    ):
+        super().__init__(data, prev_block, prev_block.next_difficulty, next_difficulty)
 
 
 class MultipleBlocks(Block):
@@ -95,13 +95,23 @@ class MultipleBlocks(Block):
                 block.prev_block is prev_block
             ), f"Block number {i+2} has different previous block to its other predecessor blocks."
 
-        data = obj2txt(
-            {"data": {f"block {i+1}": [block.data] for i, block in enumerate(blocks)}},
+        self.blocks = blocks
+
+        super().__init__(self.data, prev_block, self.next_difficulty)
+
+    @property
+    def data(self):
+        return obj2txt(
+            {
+                "data": {
+                    f"block {i+1}": block.data for i, block in enumerate(self.blocks)
+                }
+            },
         )
 
-        next_difficulty = max(map(self._get_next_difficulty, blocks))
-
-        super().__init__(data, prev_block, next_difficulty)
+    @property
+    def next_difficulty(self):
+        return max(map(self._get_next_difficulty, self.blocks))
 
     def _get_next_difficulty(self, block: Block):
         return block.next_difficulty
