@@ -9,8 +9,8 @@ def generate_primes(
 ) -> int | Tuple[int, ...]:  # TODO update base.crypto.rsa when this is moved from exo
     while True:
         # --- TO IMPLEMENT --
-        p = ...
-        q = ...
+        p = 103
+        q = 71
         # -------------------
         if is_prime(p) and is_prime(q):  # type:ignore
             break

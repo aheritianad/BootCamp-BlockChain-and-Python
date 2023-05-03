@@ -17,7 +17,6 @@ __all__ = [
     "RSAPairKeys",
     "rsa_convert",
     "read_from_rsa_convert",
-    "rsa_key_demo",
 ]
 
 
@@ -38,8 +37,8 @@ class RSAPairKeys(AsymmetricKeys):
         return f"RSAPairKeys({self._first}, HIDDEN_KEY)"
 
     @staticmethod
-    def generate_pairs(n_bit: int, chunk_size: int = 2000):
-        p, q = generate_primes(n_bit, num_out=2)  # type:ignore
+    def generate_pairs(n_bit: int | None = None, chunk_size: int = 2000):
+        p, q = generate_primes(n_bit, num_out=2)
         n = p * q
         phi = (p - 1) * (q - 1)
 
@@ -88,14 +87,3 @@ def rsa_convert(txt: str, key_value: Tuple[int, int], chunk_size: int = 2000):
 
 def read_from_rsa_convert(text: str):
     return "".join(txt2obj(text))
-
-
-def rsa_key_demo(chunk_size: int = 2000):
-    p = 103
-    q = 71
-    n = p * q
-    d = 73
-    e = 4597
-    pub = RSAKey(key_value=(n, d), chunk_size=chunk_size)
-    priv = RSAKey(key_value=(n, e), chunk_size=chunk_size)
-    return RSAPairKeys(pub, priv)
