@@ -1,4 +1,4 @@
-from json import dumps
+from json import dumps as _dumps
 
 __annotations__ = {
     "repository": {
@@ -11,7 +11,7 @@ __annotations__ = {
     },
 }
 
-__author__ = dumps(
+__author__ = _dumps(
     {
         "firstname": "Heritiana Daniel",
         "lastname": "Andriasolofo",
@@ -19,4 +19,4 @@ __author__ = dumps(
         "homepage": "http://aheritianad.github.io",
     }
 )
-del dumps
+del _dumps
