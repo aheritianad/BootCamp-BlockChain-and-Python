@@ -20,7 +20,6 @@ class TransactionData:
         receiver_id: str,
         receiver_pub: Key,
         prev_block: Block,
-        transaction_message: str = "",
     ):
         self.prev_block = prev_block
         self.__make_data_dict(
@@ -29,7 +28,6 @@ class TransactionData:
             receiver_id,
             receiver_pub,
             prev_block.hash,
-            transaction_message,
         )
 
     def __make_data_dict(
@@ -39,7 +37,6 @@ class TransactionData:
         receiver_id: str,
         receiver_pub: Key,
         prev_hash,
-        transaction_message: str,
     ):
         self.data_dict = {
             "timestamp": datetime.now().isoformat(),
@@ -47,10 +44,17 @@ class TransactionData:
             "receiver_id": receiver_id,
             "assets": assets,
             "prev_hash": prev_hash,
-            "sender_confirmation": self.__sender_signature(
-                sender, assets, receiver_pub, prev_hash, transaction_message
+            "sender_confirmation": sender.sign(
+                f"[['assets',\t{assets}],\n['receiver_pub',\t{receiver_pub}],\n['prev_hash',\t{prev_hash}]]"
             ),
         }
+
+    @property
+    def data(self):
+        return str(self.data_dict)
+
+    def __repr__(self):
+        return self.data
 
     def __getitem__(self, key: str):
         if key == "prev_block":
@@ -61,36 +65,6 @@ class TransactionData:
                 f"Key {key} is not a valid key for {self.__class__.__name__}."
             )
         return self.data_dict[key]
-
-    def __sender_signature(
-        self,
-        sender: Node,
-        assets: float,
-        receiver_pub: Key,
-        prev_hash: str,
-        transaction_message: str,
-    ):
-        dict_contract = {
-            "prev_hash": prev_hash,
-            "assets": assets,
-            "receiver_pub_key_value": receiver_pub.key_value,
-            "transaction_message": sender.sends(
-                message=transaction_message, _to=receiver_pub
-            ),
-        }
-
-        string_contract = obj2txt(
-            dict_contract,
-        )
-
-        return sender.sign(string_contract)
-
-    @property
-    def data(self):
-        return obj2txt(self.data_dict)
-
-    def __repr__(self):
-        return self.data
 
 
 class TransactionBlock(Block):
