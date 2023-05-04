@@ -8,7 +8,6 @@ from bcbcpy.utils import TOTAL_CHAR, txt2int, int2txt, obj2txt, txt2obj
 
 from bcbcpy.exo.prime import generate_primes  # TODO update when it is moved from exo
 
-
 from typing import Tuple
 import random
 
@@ -16,8 +15,47 @@ __all__ = [
     "RSAKey",
     "RSAPairKeys",
     "rsa_convert",
-    "read_from_rsa_convert",
+    "read_from_rsa",
 ]
+
+
+rsa_chunk_open_tag = "<rsachunkrsa>"
+rsa_chunk_close_tag = "</rsachunkrsa>"
+end_open_tag = len(rsa_chunk_open_tag)
+begin_close_tag = len(rsa_chunk_close_tag)
+remove_tags = lambda inp_txt: inp_txt[end_open_tag:-begin_close_tag]
+
+
+def read_from_rsa(text: str):
+    chunks = txt2obj(text)
+    chunks = list(map(remove_tags, chunks))
+    return "".join(chunks)
+
+
+def rsa_convert(txt: str, key_value: Tuple[int, int], chunk_size: int = 2000):
+    n, e = key_value
+    assert n > TOTAL_CHAR, "Key too small."
+
+    if rsa_chunk_open_tag in txt and rsa_chunk_close_tag in txt:
+        chunks = txt2obj(txt)
+        chunks = list(map(remove_tags, chunks))
+
+    else:
+        # consider it as raw
+        chunks = [
+            txt[i * chunk_size : (i + 1) * chunk_size]
+            for i in range(len(txt) // chunk_size + 1)
+        ]
+
+    out = []
+    for chunk in chunks:
+        base_10 = txt2int(chunk)
+        base_n = int2base(base_10, n)
+        cip_n = [pow(digit, e, n) for digit in base_n]
+        cip_10 = base2int(cip_n, n)
+        text = int2txt(cip_10)
+        out.append(rsa_chunk_open_tag + text + rsa_chunk_close_tag)
+    return obj2txt(out, indent=0)
 
 
 class RSAKey(Key):
@@ -55,35 +93,3 @@ class RSAPairKeys(AsymmetricKeys):
         pub = RSAKey(key_value=(n, d), chunk_size=chunk_size)
         priv = RSAKey(key_value=(n, e), chunk_size=chunk_size)
         return RSAPairKeys(pub, priv)
-
-
-def rsa_convert(txt: str, key_value: Tuple[int, int], chunk_size: int = 2000):
-    n, e = key_value
-    assert n > TOTAL_CHAR, "Key too small."
-
-    chunks = txt2obj(txt)
-
-    if not isinstance(chunks, list) and any(
-        not isinstance(chunk, str) for chunk in chunks
-    ):
-        chunks = txt  # ignore loading and consider it as txt
-
-    if isinstance(chunks, str):
-        chunks = [
-            txt[i * chunk_size : (i + 1) * chunk_size]
-            for i in range(len(txt) // chunk_size + 1)
-        ]
-
-    out = []
-    for chunk in chunks:
-        base_10 = txt2int(chunk)
-        base_n = int2base(base_10, n)
-        cip_n = [pow(digit, e, n) for digit in base_n]
-        cip_10 = base2int(cip_n, n)
-        text = int2txt(cip_10)
-        out.append(text)
-    return obj2txt(out, indent=0, separators=(",", ":"))
-
-
-def read_from_rsa_convert(text: str):
-    return "".join(txt2obj(text))
