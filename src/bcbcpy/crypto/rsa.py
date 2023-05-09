@@ -2,11 +2,14 @@ from bcbcpy import __author__
 
 
 from bcbcpy.crypto import Key, AsymmetricKeys
-from bcbcpy.functional.math import is_invertible_mod, int2base, base2int
+from bcbcpy.functional.math import (
+    is_invertible_mod,
+    int2base,
+    base2int,
+    generate_probably_prime,
+)
 from bcbcpy.utils import TOTAL_CHAR, txt2int, int2txt, obj2txt, txt2obj
 
-
-from bcbcpy.exo.prime import generate_primes  # TODO update when it is moved from exo
 
 from typing import Tuple
 import random
@@ -76,7 +79,8 @@ class RSAPairKeys(AsymmetricKeys):
 
     @staticmethod
     def generate_pairs(n_bit: int | None = None, chunk_size: int = 2000):
-        p, q = generate_primes(n_bit, num_out=2)
+        p = generate_probably_prime(n_bit // 2 + 1)
+        q = generate_probably_prime(n_bit // 2 - 1)
         n = p * q
         phi = (p - 1) * (q - 1)
 

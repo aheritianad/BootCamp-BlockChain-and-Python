@@ -4,7 +4,7 @@ Submodules:
 
 ```sh
 crypto
-├── cesar
+├── caesar
 ├── hash
 ├── key
 ├── permutation
