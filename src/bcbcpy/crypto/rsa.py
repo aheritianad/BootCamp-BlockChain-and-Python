@@ -8,7 +8,7 @@ from bcbcpy.functional.math import (
     base2int,
     generate_probably_prime,
 )
-from bcbcpy.utils import TOTAL_CHAR, txt2int, int2txt, obj2txt, txt2obj
+from bcbcpy.utils import TOTAL_CHAR, txt2int, int2txt
 
 
 from typing import Tuple
@@ -18,52 +18,23 @@ __all__ = [
     "RSAKey",
     "RSAPairKeys",
     "rsa_convert",
-    "read_from_rsa",
 ]
 
 
-rsa_chunk_open_tag = "<rsachunkrsa>"
-rsa_chunk_close_tag = "</rsachunkrsa>"
-end_open_tag = len(rsa_chunk_open_tag)
-begin_close_tag = len(rsa_chunk_close_tag)
-remove_tags = lambda inp_txt: inp_txt[end_open_tag:-begin_close_tag]
-
-
-def read_from_rsa(text: str):
-    chunks = txt2obj(text)
-    chunks = list(map(remove_tags, chunks))
-    return "".join(chunks)
-
-
-def rsa_convert(txt: str, key_value: Tuple[int, int], chunk_size: int = 2000):
+def rsa_convert(txt: str, key_value: Tuple[int, int]):
     n, e = key_value
     assert n > TOTAL_CHAR, "Key too small."
-
-    if rsa_chunk_open_tag in txt and rsa_chunk_close_tag in txt:
-        chunks = txt2obj(txt)
-        chunks = list(map(remove_tags, chunks))
-
-    else:
-        # consider it as raw
-        chunks = [
-            txt[i * chunk_size : (i + 1) * chunk_size]
-            for i in range(len(txt) // chunk_size + 1)
-        ]
-
-    out = []
-    for chunk in chunks:
-        base_10 = txt2int(chunk)
-        base_n = int2base(base_10, n)
-        cip_n = [pow(digit, e, n) for digit in base_n]
-        cip_10 = base2int(cip_n, n)
-        text = int2txt(cip_10)
-        out.append(rsa_chunk_open_tag + text + rsa_chunk_close_tag)
-    return obj2txt(out, indent=0)
+    base_10 = txt2int(txt)
+    base_n = int2base(base_10, n)
+    cip_n = [pow(digit, e, n) for digit in base_n]
+    cip_10 = base2int(cip_n, n)
+    out = int2txt(cip_10)
+    return out
 
 
 class RSAKey(Key):
-    def __init__(self, key_value: Tuple[int, int], chunk_size: int = 2000):
-        convert = lambda txt, key_value: rsa_convert(txt, key_value, chunk_size)
+    def __init__(self, key_value: Tuple[int, int]):
+        convert = lambda txt, key_value: rsa_convert(txt, key_value)
         super().__init__(
             key_value,
             convert,
@@ -78,9 +49,12 @@ class RSAPairKeys(AsymmetricKeys):
         return f"RSAPairKeys({self._first}, HIDDEN_KEY)"
 
     @staticmethod
-    def generate_pairs(n_bit: int | None = None, chunk_size: int = 2000):
-        p = generate_probably_prime(n_bit // 2 + 1)
-        q = generate_probably_prime(n_bit // 2 - 1)
+    def generate_pairs(bit_size: int = 16):
+        assert bit_size > 4
+        b = bit_size // 2 + 1
+        s = bit_size - b
+        p = generate_probably_prime(bit_size // 2 + 1)
+        q = generate_probably_prime(bit_size // 2 - 1)
         n = p * q
         phi = (p - 1) * (q - 1)
 
@@ -94,6 +68,6 @@ class RSAPairKeys(AsymmetricKeys):
         else:
             d = e = phi - 1  # not supposed to happened, but I still put it for security
 
-        pub = RSAKey(key_value=(n, d), chunk_size=chunk_size)
-        priv = RSAKey(key_value=(n, e), chunk_size=chunk_size)
+        pub = RSAKey(key_value=(n, d))
+        priv = RSAKey(key_value=(n, e))
         return RSAPairKeys(pub, priv)

@@ -1,7 +1,7 @@
 from bcbcpy import __author__
 
 
-from bcbcpy.crypto import Key, BaseKeys, RSAKey, read_from_rsa
+from bcbcpy.crypto import Key, BaseKeys
 from bcbcpy.utils import add_noises, remove_noises
 
 
@@ -75,9 +75,6 @@ class Node:
 
         signed_message = self.decrypt(message)
         message = key.convert(signed_message)  # unsign
-
-        if isinstance(key, RSAKey):
-            message = read_from_rsa(message)
 
         if _with_noise:
             message = remove_noises(message)

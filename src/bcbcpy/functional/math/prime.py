@@ -86,7 +86,7 @@ def is_probably_prime(n: int, runs: int):
     """Miller-Rabin"""
     if n < 2:
         return False
-    elif n == 2:
+    elif n in (2, 3, 5):
         return True
     elif n % 2 == 0:
         return False
@@ -111,6 +111,6 @@ def generate_probably_prime(bit_size: int, runs: int | None = None):
     if runs is None:
         runs = bit_size // 4 + 1
     while True:
-        n = random.randint(2**bit_size - 1, 2**bit_size - 1)
+        n = random.randint(2 ** (bit_size - 1), 2**bit_size - 1)
         if is_probably_prime(n, runs):
             return n

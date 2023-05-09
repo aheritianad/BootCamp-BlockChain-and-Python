@@ -15,7 +15,7 @@ class CaesarKey(SymmetricKey):
         super().__init__(key_value, caesar_convert)
 
     def __repr__(self):
-        return f"CaesarKey({self._first.key_value}, {self._BaseKeys__sec.key_value})"
+        return f"CaesarKey({self._first.key_value})"
 
     @classmethod
     def compute_inverse(cls, key_value: int):
