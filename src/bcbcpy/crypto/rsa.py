@@ -2,7 +2,7 @@ from bcbcpy import __author__
 
 
 from bcbcpy.crypto import Key, AsymmetricKeys
-from bcbcpy.functional.math import (
+from bcbcpy.math import (
     is_invertible_mod,
     int2base,
     base2int,

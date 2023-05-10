@@ -1,7 +1,7 @@
 from bcbcpy import __author__
 
 
-from bcbcpy.functional.math.arithmetic import digits, base2int
+from bcbcpy.math.arithmetic import digits, base2int
 
 from typing import Tuple
 import random
@@ -16,6 +16,7 @@ __all__ = [
     "txt2obj",
     "add_noises",
     "remove_noises",
+    "TOTAL_CHAR",
 ]
 
 TOTAL_CHAR = 97

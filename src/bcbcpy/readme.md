@@ -19,13 +19,10 @@ bcbcpy
 │   ├── key
 │   ├── permutation
 │   └── rsa
-├── exo
-│   ├── linked_list
+├── math
 │   └── prime
-├── functional
-│   └── math
 │      └── arithmetic
+├── utils
 ├── node
-├── setup
-└── utils
+└── setup
 ```
