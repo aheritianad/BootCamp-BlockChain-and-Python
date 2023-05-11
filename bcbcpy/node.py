@@ -24,7 +24,7 @@ class Node:
         return self.__keys.pub
 
     def encrypt(self, message: str, key: Key) -> str:
-        return key.convert(message)
+        return key.encode(message)
 
     def decrypt(self, cipher_text: str) -> str:
         return self.__keys.decrypt(cipher_text)
@@ -74,7 +74,7 @@ class Node:
             _with_noise = True
 
         signed_message = self.decrypt(message)
-        message = key.convert(signed_message)  # unsign
+        message = key.encode(signed_message)  # unsign
 
         if _with_noise:
             message = remove_noises(message)

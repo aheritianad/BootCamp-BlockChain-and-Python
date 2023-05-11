@@ -7,12 +7,12 @@ from bcbcpy.utils import C2I, I2C, TOTAL_CHAR
 
 import random
 
-__all__ = ["CaesarKey", "caesar_convert"]
+__all__ = ["CaesarKey", "caesar_encoder"]
 
 
 class CaesarKey(SymmetricKey):
     def __init__(self, key_value: int) -> None:
-        super().__init__(key_value, caesar_convert)
+        super().__init__(key_value, caesar_encoder)
 
     def __repr__(self) -> str:
         return f"CaesarKey({self._first.key_value})"
@@ -28,8 +28,8 @@ class CaesarKey(SymmetricKey):
         return CaesarKey(key)
 
 
-def caesar_convert(text: str, key_value: int) -> str:
-    converted_text = ""
+def caesar_encoder(text: str, key_value: int) -> str:
+    encoded_text = ""
     for c in text:
-        converted_text += I2C[(C2I[c] + key_value) % TOTAL_CHAR]
-    return converted_text
+        encoded_text += I2C[(C2I[c] + key_value) % TOTAL_CHAR]
+    return encoded_text

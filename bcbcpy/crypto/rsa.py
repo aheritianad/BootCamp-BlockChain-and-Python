@@ -17,11 +17,11 @@ import random
 __all__ = [
     "RSAKey",
     "RSAPairKeys",
-    "rsa_convert",
+    "rsa_encoder",
 ]
 
 
-def rsa_convert(txt: str, key_value: Tuple[int, int]) -> str:
+def rsa_encoder(txt: str, key_value: Tuple[int, int]) -> str:
     n, e = key_value
     assert n > TOTAL_CHAR, "Key too small."
     base_10 = txt2int(txt)
@@ -34,10 +34,10 @@ def rsa_convert(txt: str, key_value: Tuple[int, int]) -> str:
 
 class RSAKey(Key):
     def __init__(self, key_value: Tuple[int, int]) -> None:
-        convert = lambda txt, key_value: rsa_convert(txt, key_value)
+        encoder = lambda txt, key_value: rsa_encoder(txt, key_value)
         super().__init__(
             key_value,
-            convert,
+            encoder,
         )
 
 

@@ -4,7 +4,6 @@ from bcbcpy import __author__
 from typing import Callable, Any, Iterator
 
 __all__ = [
-    "convert",
     "Key",
     "BaseKeys",
     "SymmetricKey",
@@ -13,23 +12,19 @@ __all__ = [
 
 
 class Key:
-    def __init__(self, key_value, convert: Callable[[str, Any], str]) -> None:
+    def __init__(self, key_value, encoder: Callable[[str, Any], str]) -> None:
         self.key_value = key_value
-        self._conv_fcs = convert
+        self._conv_fcs = encoder
 
     def __repr__(self) -> str:
         return str(self.key_value)
 
-    def convert(self, text: str) -> str:
+    def encode(self, text: str) -> str:
         return self._conv_fcs(text, self.key_value)
 
     def key_alike(self, key_value) -> "Key":
         assert isinstance(key_value, type(self.key_value))
         return type(self)(key_value, self._conv_fcs)
-
-
-def convert(text: str, key: Key) -> str:
-    return key.convert(text)
 
 
 class BaseKeys:
@@ -45,21 +40,21 @@ class BaseKeys:
         return self._first
 
     def encrypt(self, txt: str) -> str:
-        return self._first.convert(txt)
+        return self._first.encode()(txt)
 
     def decrypt(self, txt: str) -> str:
-        return self.__sec.convert(txt)
+        return self.__sec.encode()(txt)
 
     def sign(self, txt: str) -> str:
-        return self.__sec.convert(txt)
+        return self.__sec.encode()(txt)
 
 
 class SymmetricKey(BaseKeys):
-    def __init__(self, key_value, convert: Callable[[str, Any], str]) -> None:
+    def __init__(self, key_value, encoder: Callable[[str, Any], str]) -> None:
         inverse = self.compute_inverse(key_value)
 
-        first = Key(key_value, convert)
-        second = Key(inverse, convert)
+        first = Key(key_value, encoder)
+        second = Key(inverse, encoder)
 
         super().__init__(first, second)
 
