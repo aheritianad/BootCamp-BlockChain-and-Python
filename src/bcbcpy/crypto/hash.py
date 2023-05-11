@@ -24,7 +24,7 @@ class HashName(Enum):
     shake_256 = "shake_256"
 
 
-def hash_function(*data, nonce: int = 0, hash_name: HashName = HashName.sha256):
+def hash_function(*data, nonce: int = 0, hash_name: HashName = HashName.sha256) -> str:
     u_string = "".join(map(str, [*data, nonce]))
     b_string = u_string.encode(encoding="utf-8")
     hash_object = new(name=hash_name.name, data=b_string)
@@ -32,7 +32,7 @@ def hash_function(*data, nonce: int = 0, hash_name: HashName = HashName.sha256):
     return hashed_value
 
 
-def is_valid_hash(hash_value: str, difficulty: int = 4):
+def is_valid_hash(hash_value: str, difficulty: int = 4) -> bool:
     output = True
     for i in range(difficulty):
         if hash_value[i] != "0":
@@ -42,7 +42,7 @@ def is_valid_hash(hash_value: str, difficulty: int = 4):
 
 def hash_nonce_initializer(
     *initial_data: str, difficulty: int = 4, hash_name: HashName = HashName.sha256
-):
+) -> tuple[str, int]:
     nonce = 0
     while not is_valid_hash(
         tmp_hash := hash_function(*initial_data, nonce=nonce, hash_name=hash_name),

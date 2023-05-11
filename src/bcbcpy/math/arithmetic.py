@@ -6,7 +6,7 @@ from typing import List
 __all__ = ["extended_gcd", "is_invertible_mod", "int2base", "base2int", "digits"]
 
 
-def extended_gcd(a: int, b: int):
+def extended_gcd(a: int, b: int) -> tuple[int, int, int]:
     """
     extended_gcd(a,b) = (r,u, v) with gcd(a,b) = r = a*u + b*v
     """
@@ -20,7 +20,7 @@ def extended_gcd(a: int, b: int):
     return _r, _u, _v
 
 
-def is_invertible_mod(a, n):
+def is_invertible_mod(a: int, n: int) -> tuple[bool, int]:
     gcd, inverse, _ = extended_gcd(a, n)
     return gcd == 1, inverse % n
 
@@ -36,7 +36,7 @@ def int2base(n: int, b: int) -> List[int]:
     return out
 
 
-def base2int(ns: List[int], b: int):
+def base2int(ns: List[int], b: int) -> int:
     assert b > 1 and isinstance(b, int)
     out = 0
     for n in ns:
@@ -45,7 +45,7 @@ def base2int(ns: List[int], b: int):
     return out
 
 
-def digits(n: int, b: int = 10):
+def digits(n: int, b: int = 10) -> list[int]:
     if b == 10:
         out = [int(d) for d in str(n)]
     else:

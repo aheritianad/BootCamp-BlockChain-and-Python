@@ -20,7 +20,7 @@ class TransactionData:
         receiver_id: str,
         receiver_pub: Key,
         prev_block: Block,
-    ):
+    ) -> None:
         self.prev_block = prev_block
         self.__make_data_dict(
             assets,
@@ -37,7 +37,7 @@ class TransactionData:
         receiver_id: str,
         receiver_pub: Key,
         prev_hash,
-    ):
+    ) -> None:
         self.data_dict = {
             "timestamp": datetime.now().isoformat(),
             "sender_id": sender.id,
@@ -50,10 +50,10 @@ class TransactionData:
         }
 
     @property
-    def data(self):
+    def data(self) -> str:
         return str(self.data_dict)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.data
 
     def __getitem__(self, key: str):
@@ -70,7 +70,7 @@ class TransactionData:
 class TransactionBlock(Block):
     def __init__(
         self, transaction_data: TransactionData, next_difficulty: int | None = None
-    ):
+    ) -> None:
         super().__init__(
             data=transaction_data.data,
             prev_block=transaction_data["prev_block"],

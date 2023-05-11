@@ -11,19 +11,19 @@ __all__ = ["CaesarKey", "caesar_convert"]
 
 
 class CaesarKey(SymmetricKey):
-    def __init__(self, key_value: int):
+    def __init__(self, key_value: int) -> None:
         super().__init__(key_value, caesar_convert)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"CaesarKey({self._first.key_value})"
 
     @classmethod
-    def compute_inverse(cls, key_value: int):
+    def compute_inverse(cls, key_value: int) -> int:
         new_value = -key_value
         return new_value
 
     @staticmethod
-    def generate_key(max_length: int = TOTAL_CHAR):
+    def generate_key(max_length: int = TOTAL_CHAR) -> "CaesarKey":
         key = random.randint(1, max_length)
         return CaesarKey(key)
 

@@ -250,7 +250,7 @@ def txt2obj(text: str):
     return obj
 
 
-def add_noises(message: str):
+def add_noises(message: str) -> str:
     noisy_message = ""
     noises = list(C2I.keys())
     for c in message:
@@ -259,6 +259,6 @@ def add_noises(message: str):
     return noisy_message
 
 
-def remove_noises(noisy_message: str):
+def remove_noises(noisy_message: str) -> str:
     clean_message = noisy_message[::2]
     return clean_message

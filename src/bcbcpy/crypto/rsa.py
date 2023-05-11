@@ -21,7 +21,7 @@ __all__ = [
 ]
 
 
-def rsa_convert(txt: str, key_value: Tuple[int, int]):
+def rsa_convert(txt: str, key_value: Tuple[int, int]) -> str:
     n, e = key_value
     assert n > TOTAL_CHAR, "Key too small."
     base_10 = txt2int(txt)
@@ -33,7 +33,7 @@ def rsa_convert(txt: str, key_value: Tuple[int, int]):
 
 
 class RSAKey(Key):
-    def __init__(self, key_value: Tuple[int, int]):
+    def __init__(self, key_value: Tuple[int, int]) -> None:
         convert = lambda txt, key_value: rsa_convert(txt, key_value)
         super().__init__(
             key_value,
@@ -42,17 +42,16 @@ class RSAKey(Key):
 
 
 class RSAPairKeys(AsymmetricKeys):
-    def __init__(self, pub: RSAKey, priv: RSAKey):
+    def __init__(self, pub: RSAKey, priv: RSAKey) -> None:
         super().__init__(pub, priv)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"RSAPairKeys({self._first}, HIDDEN_KEY)"
 
     @staticmethod
-    def generate_pairs(bit_size: int = 16):
+    def generate_pairs(bit_size: int = 16) -> "RSAPairKeys":
         assert bit_size > 4
         b = bit_size // 2 + 1
-        s = bit_size - b
         p = generate_probably_prime(bit_size // 2 + 1)
         q = generate_probably_prime(bit_size // 2 - 1)
         n = p * q

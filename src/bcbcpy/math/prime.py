@@ -16,14 +16,14 @@ def get_s_d(n: int) -> tuple[int, int]:
 
     s = 0
     d = n - 1
-    while not d & 1:  # n%2 == 1
+    while not d & 1:
         s += 1
-        d >>= 1  # d//=2
+        d >>= 1
 
     return s, d
 
 
-def is_prime(n: int):
+def is_prime(n: int) -> bool:
     """
     Improved Miller-Rabin deterministic for *small* bits
 
@@ -82,7 +82,7 @@ def is_prime(n: int):
     return True
 
 
-def is_probably_prime(n: int, runs: int):
+def is_probably_prime(n: int, runs: int) -> bool:
     """Miller-Rabin"""
     if n < 2:
         return False
@@ -106,7 +106,7 @@ def is_probably_prime(n: int, runs: int):
     return True
 
 
-def generate_probably_prime(bit_size: int, runs: int | None = None):
+def generate_probably_prime(bit_size: int, runs: int | None = None) -> int:
     assert bit_size > 0
     if runs is None:
         runs = bit_size // 4 + 1

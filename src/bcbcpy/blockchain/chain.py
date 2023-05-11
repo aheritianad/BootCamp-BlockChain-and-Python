@@ -1,6 +1,6 @@
 from bcbcpy import __author__
 
-
+from typing import Generator
 from bcbcpy.blockchain.block.block import Block, InitialBlock
 from bcbcpy.utils import obj2txt
 
@@ -13,10 +13,10 @@ class BaseChain:
         self._length = 0
         self.root_block = self.last_block = None
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self._length
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         root = {
             "hash": self.root_block.hash,
             "data": self.root_block.data[:15]
@@ -36,14 +36,14 @@ class BaseChain:
         return obj2txt(content)
 
     @property
-    def hash(self):
+    def hash(self) -> str:
         return self.last_block.hash
 
     @property
-    def data(self):
+    def data(self) -> str:
         return self.last_block.data
 
-    def add_block(self, block: Block):
+    def add_block(self, block: Block) -> None:
         assert (
             self.last_block is block.prev_block
         ), "Incompatible block to the head block of the chain."
@@ -51,7 +51,7 @@ class BaseChain:
         self.last_block = block
         self._length += 1
 
-    def __iter__(self):
+    def __iter__(self) -> Generator[Block, None, None]:
         current_block = self.last_block
         while current_block:
             yield current_block
@@ -59,14 +59,16 @@ class BaseChain:
 
 
 class RootChain(BaseChain):
-    def __init__(self, initial_data: str = "", difficulty: int = 4):
+    def __init__(self, initial_data: str = "", difficulty: int = 4) -> None:
         super().__init__()
         self._length = 1
         self.root_block = self.last_block = InitialBlock(initial_data, difficulty)
 
 
 class Chain(BaseChain):
-    def __init__(self, root_chain: BaseChain, info: str = "", difficulty: int = 4):
+    def __init__(
+        self, root_chain: BaseChain, info: str = "", difficulty: int = 4
+    ) -> None:
         super().__init__()
         self._length = 1
         self.root_block = Block(

@@ -13,23 +13,23 @@ __all__ = ["Node"]
 
 
 class Node:
-    def __init__(self, keys: BaseKeys, username: Optional[str] = None):
+    def __init__(self, keys: BaseKeys, username: Optional[str] = None) -> None:
         if username is None:
             username = f"user_{random.random()*1e6:.0f}"
         self.id = username
         self.__keys = keys
 
     @property
-    def pub(self):
+    def pub(self) -> Key:
         return self.__keys.pub
 
-    def encrypt(self, message: str, key: Key):
+    def encrypt(self, message: str, key: Key) -> str:
         return key.convert(message)
 
-    def decrypt(self, cipher_text: str):
+    def decrypt(self, cipher_text: str) -> str:
         return self.__keys.decrypt(cipher_text)
 
-    def sign(self, message: str):
+    def sign(self, message: str) -> str:
         return self.__keys.sign(message)
 
     def sends(
@@ -37,7 +37,7 @@ class Node:
         message: str,
         _to: "Node|Key",
         _with_noises: bool = False,
-    ):
+    ) -> str:
         if isinstance(_to, Key):
             key = _to
         elif isinstance(_to, Node):
@@ -60,7 +60,7 @@ class Node:
         self,
         message: str,
         _from: "Node|Key",
-    ):
+    ) -> str:
         if isinstance(_from, Key):
             key = _from
         elif isinstance(_from, Node):

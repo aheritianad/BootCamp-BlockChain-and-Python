@@ -15,7 +15,7 @@ class Node(_Node):
         to: "Node",
         prev_block: Block,
         transaction_message: str = "",
-    ):
+    ) -> TransactionData:
         trans_data = TransactionData(assets, self, to.id, to.pub, prev_block)
         return trans_data
 
@@ -25,7 +25,7 @@ class Node(_Node):
         to: "Node",
         prev_block: Block,
         next_difficulty: int = 4,
-    ):
+    ) -> TransactionBlock:
         trans_data = self.make_transaction_data(assets, to, prev_block)
         trans_block = TransactionBlock(trans_data, next_difficulty)
         return trans_block

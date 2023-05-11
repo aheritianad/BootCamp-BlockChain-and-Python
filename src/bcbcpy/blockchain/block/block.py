@@ -15,7 +15,7 @@ class BaseBlock:
         prev_block: "BaseBlock | None" = None,
         difficulty: int = 4,
         next_difficulty: int | None = None,
-    ):
+    ) -> None:
         self._nonce = 0
         self.data = data
         self.prev_block = prev_block
@@ -27,12 +27,12 @@ class BaseBlock:
         self.next_difficulty = next_difficulty
 
     @property
-    def prev_hash(self):
+    def prev_hash(self) -> str:
         if self.prev_block is None:
             return ""
         return self.prev_block.hash
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return obj2txt(
             {
                 "prev_hash": self.prev_hash,
@@ -50,10 +50,10 @@ class BaseBlock:
     def hash(self) -> str:
         return hash_function(self.data, self.prev_hash, nonce=self.nonce)
 
-    def is_valid(self):
+    def is_valid(self) -> bool:
         return is_valid_hash(self.hash, self.difficulty)
 
-    def mine(self):
+    def mine(self) -> None:
         self._nonce = 0
         while True:
             if self.is_valid():
@@ -67,7 +67,7 @@ class InitialBlock(BaseBlock):
         initial_data: str = "",
         difficulty: int = 4,
         next_difficulty: int | None = None,
-    ):
+    ) -> None:
         super().__init__(
             data=initial_data,
             prev_block=None,
@@ -80,7 +80,7 @@ class InitialBlock(BaseBlock):
 class Block(BaseBlock):
     def __init__(
         self, data: str, prev_block: BaseBlock, next_difficulty: int | None = None
-    ):
+    ) -> None:
         super().__init__(data, prev_block, prev_block.next_difficulty, next_difficulty)
 
 
@@ -88,7 +88,7 @@ class MultipleBlocks(Block):
     def __init__(
         self,
         *blocks: Block,
-    ):
+    ) -> None:
         prev_block = blocks[0].prev_block
         for i, block in enumerate(blocks[1:]):
             assert (
@@ -100,7 +100,7 @@ class MultipleBlocks(Block):
         super().__init__(self.data, prev_block, self.next_difficulty)
 
     @property
-    def data(self):
+    def data(self) -> str:
         return obj2txt(
             {
                 "data": {
