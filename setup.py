@@ -32,6 +32,4 @@ setuptools.setup(
     ],
     license=license,
     python_requires=">=3.9",
-    include_dirs=["tuto"],
-    package_data={"tuto": ["tuto.ipynb"]},
 )
