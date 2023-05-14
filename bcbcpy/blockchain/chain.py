@@ -1,4 +1,4 @@
-from bcbcpy import __author__
+from bcbcpy.__ import __author__
 
 from typing import Generator
 from bcbcpy.blockchain.block.block import Block, InitialBlock
