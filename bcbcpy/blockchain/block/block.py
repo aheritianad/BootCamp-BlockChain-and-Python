@@ -8,8 +8,6 @@ try:
     from typing import Optional
 except ModuleNotFoundError:
     from typing_extensions import Optional
-except ModuleNotFoundError:
-    from beartype import Optional
 
 __all__ = ["InitialBlock", "Block", "MultipleBlocks"]
 

@@ -3,8 +3,13 @@ from bcbcpy.__ import __author__
 
 from bcbcpy.crypto.key import SymmetricKey
 
+try:
+    from typing import Tuple, List, Callable
+except ModuleNotFoundError:
+    from typing_extensions import Tuple, List, Callable
+except ModuleNotFoundError:
+    from beartype import Tuple, List, Callable
 
-from typing import Tuple, List, Callable
 import random
 
 

@@ -11,7 +11,11 @@ from bcbcpy.math import (
 from bcbcpy.utils import TOTAL_CHAR, txt2int, int2txt
 
 
-from typing import Tuple
+try:
+    from typing import Tuple
+except ModuleNotFoundError:
+    from typing_extensions import Tuple
+
 import random
 
 __all__ = [

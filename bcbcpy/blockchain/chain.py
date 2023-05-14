@@ -1,6 +1,10 @@
 from bcbcpy.__ import __author__
 
-from typing import Generator
+try:
+    from typing import Generator
+except ModuleNotFoundError:
+    from typing_extensions import Generator
+
 from bcbcpy.blockchain.block.block import Block, InitialBlock
 from bcbcpy.utils import obj2txt
 

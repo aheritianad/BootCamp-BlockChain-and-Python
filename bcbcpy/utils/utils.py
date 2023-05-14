@@ -3,7 +3,12 @@ from bcbcpy.__ import __author__
 
 from bcbcpy.math.arithmetic import digits, base2int
 
-from typing import Tuple
+
+try:
+    from typing import Tuple, Optional
+except ModuleNotFoundError:
+    from typing_extensions import Tuple, Optional
+
 import random
 import json
 
@@ -237,7 +242,7 @@ def txt2int(text: str):
     return nb
 
 
-def obj2txt(obj: object, indent: int = 4, separators: Tuple[str, str] | None = None):
+def obj2txt(obj: object, indent: int = 4, separators: Optional[Tuple[str, str]] = None):
     return json.dumps(obj, indent=indent, separators=separators)
 
 

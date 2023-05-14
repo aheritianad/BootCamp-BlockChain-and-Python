@@ -5,7 +5,10 @@ from bcbcpy.crypto import Key, BaseKeys
 from bcbcpy.utils import add_noises, remove_noises
 
 
-from typing import Optional
+try:
+    from typing import Optional
+except ModuleNotFoundError:
+    from typing_extensions import Optional
 import random
 
 

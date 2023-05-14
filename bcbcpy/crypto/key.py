@@ -1,7 +1,12 @@
 from bcbcpy.__ import __author__
 
 
-from typing import Callable, Any, Iterator
+try:
+    from typing import Callable, Any, Iterator
+except ModuleNotFoundError:
+    from typing_extensions import Callable, Any, Iterator
+except ModuleNotFoundError:
+    from beartype import Callable, Any, Iterator
 
 __all__ = [
     "Key",

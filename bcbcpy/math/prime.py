@@ -5,8 +5,6 @@ try:
     from typing import Optional
 except ModuleNotFoundError:
     from typing_extensions import Optional
-except ModuleNotFoundError:
-    from beartype import Optional
 
 
 def get_s_d(n: int) -> tuple[int, int]:

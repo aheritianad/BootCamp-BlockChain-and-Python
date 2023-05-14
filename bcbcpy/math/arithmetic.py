@@ -1,7 +1,10 @@
 from bcbcpy.__ import __author__
 
 
-from typing import List
+try:
+    from typing import List
+except ModuleNotFoundError:
+    from typing_extensions import List
 
 __all__ = ["extended_gcd", "is_invertible_mod", "int2base", "base2int", "digits"]
 
