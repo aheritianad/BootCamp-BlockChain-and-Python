@@ -1,35 +1,15 @@
 import math
 import random
-
 from typing import Optional
 
-
-def get_s_d(n: int) -> tuple[int, int]:
-    """
-    Find s and d such that n - 1 = d * 2^s and d odd.
-
-    Args:
-        n (int): odd number to decompose.
-
-    Returns:
-        tuple[int, int]: s and d
-    """
-    assert n % 2 == 1, "n needs to be odd"
-
-    s = 0
-    d = n - 1
-    while not d & 1:
-        s += 1
-        d >>= 1
-
-    return s, d
+from .arithmetic import get_s_d
 
 
 def is_prime(n: int) -> bool:
     """
-    Improved Miller-Rabin deterministic for *small* bits
+    Return `True` if the decimal number `n` is prime, and `False` o.w.
 
-    see # https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test#Testing_against_small_sets_of_bases
+    Improved Miller-Rabin deterministic for *small* bits number (https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test#Testing_against_small_sets_of_bases).
     """
     if n < 2:
         return False
@@ -87,7 +67,12 @@ def is_prime(n: int) -> bool:
 
 
 def is_probably_prime(n: int, runs: int) -> bool:
-    """Miller-Rabin"""
+    """
+    Miller-Rabin
+    ====
+
+    Return `True` if `n` is probably prime with probability `4^-runs` and `False` when it is sure to not be.
+    """
     if n < 2:
         return False
     elif n in (2, 3, 5):
@@ -111,6 +96,9 @@ def is_probably_prime(n: int, runs: int) -> bool:
 
 
 def generate_probably_prime(bit_size: int, runs: Optional[int] = None) -> int:
+    """
+    Return a number of `bit_size` bits which is probably prime with probability `4^-runs`. `runs` will be set to `bit_size//4 + 1` when its value is `None`.
+    """
     assert bit_size > 0
     if runs is None:
         runs = bit_size // 4 + 1
