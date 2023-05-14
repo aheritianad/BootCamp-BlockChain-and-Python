@@ -2,6 +2,9 @@
 
 This is an python implementation from scratch.
 
+It can be installed by running  
+`pip install git+https://github.com/aheritianad/BootCamp-BlockChain-and-Python.git --use-pep517`.
+
 ## Submodules
 
 ```sh
