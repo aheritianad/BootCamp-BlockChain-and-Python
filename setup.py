@@ -12,12 +12,12 @@ setuptools.setup(
     description="A standalone(no-third-party) crypto & blockchain demo package on python.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    author="Heritiana Daniel, Andriasolofo",
+    author="Heritiana Daniel, Andriasolofo (https://aheritianad.github.io)",
     author_email="aheritianad@gmail.com",
     project_urls={
-        "Source": "https://github.com/aheritiana/BootCamp-BlockChain-and-Python/",
+        "Source": "https://github.com/aheritianad/BootCamp-BlockChain-and-Python/",
     },
-    url="https://github.com/aheritiana/BootCamp-BlockChain-and-Python/",
+    url="https://github.com/aheritianad/BootCamp-BlockChain-and-Python/",
     packages=setuptools.find_packages(
         include=(
             "bcbcpy",
