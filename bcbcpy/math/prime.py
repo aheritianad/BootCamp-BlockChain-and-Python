@@ -65,7 +65,9 @@ def is_prime(n: int) -> bool:
     elif n < 3_317_044_064_679_887_385_961_981:
         base_witness = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41]
     else:
-        Warning("It is recommended to use probabilistic test.")
+        import warnings
+
+        warnings.warn("It is recommended to use probabilistic test.")
         base_witness = range(2, min(n - 2, int(2 * math.log(n) ** 2)))
 
     s, d = get_s_d(n)
