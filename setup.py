@@ -1,6 +1,6 @@
 import setuptools
 
-with open("src/bcbcpy/readme.md") as f:
+with open("bcbcpy/readme.md") as f:
     long_description = f.read()
 
 with open("LICENSE") as f:
