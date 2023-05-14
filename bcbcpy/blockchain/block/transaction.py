@@ -6,10 +6,7 @@ from bcbcpy.node import Node
 from bcbcpy.crypto import Key
 from bcbcpy.utils import obj2txt
 
-try:
-    from typing import Optional
-except ModuleNotFoundError:
-    from typing_extensions import Optional
+from typing import Optional
 
 from datetime import datetime
 

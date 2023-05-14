@@ -4,11 +4,7 @@ from bcbcpy.__ import __author__
 from bcbcpy.math.arithmetic import digits, base2int
 
 
-try:
-    from typing import Tuple, Optional
-except ModuleNotFoundError:
-    from typing_extensions import Tuple, Optional
-
+from typing import Tuple, Optional
 import random
 import json
 

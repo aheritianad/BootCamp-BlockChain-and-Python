@@ -1,10 +1,7 @@
 import math
 import random
 
-try:
-    from typing import Optional
-except ModuleNotFoundError:
-    from typing_extensions import Optional
+from typing import Optional
 
 
 def get_s_d(n: int) -> tuple[int, int]:
@@ -84,7 +81,7 @@ def is_prime(n: int) -> bool:
             if y == 1 and x != 1 and x != n - 1:
                 return False
             x = y
-        if y != 1:
+        if y != 1:  # type: ignore
             return False
     return True
 
@@ -108,7 +105,7 @@ def is_probably_prime(n: int, runs: int) -> bool:
             if y == 1 and x != 1 and x != n - 1:
                 return False
             x = y
-        if y != 1:
+        if y != 1:  # type: ignore
             return False
     return True
 

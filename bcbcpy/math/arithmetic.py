@@ -1,12 +1,9 @@
 from bcbcpy.__ import __author__
 
 
-try:
-    from typing import List
-except ModuleNotFoundError:
-    from typing_extensions import List
+from typing import List, Union
 
-__all__ = ["extended_gcd", "is_invertible_mod", "int2base", "base2int", "digits"]
+__all__ = ["extended_gcd", "inverse_mod", "int2base", "base2int", "digits"]
 
 
 def extended_gcd(a: int, b: int) -> tuple[int, int, int]:
@@ -23,9 +20,13 @@ def extended_gcd(a: int, b: int) -> tuple[int, int, int]:
     return _r, _u, _v
 
 
-def is_invertible_mod(a: int, n: int) -> tuple[bool, int]:
-    gcd, inverse, _ = extended_gcd(a, n)
-    return gcd == 1, inverse % n
+def inverse_mod(a: int, n: int) -> Union[int, None]:
+    gcd, u, _ = extended_gcd(a, n)
+    if gcd != 1:
+        inverse = None
+    else:
+        inverse = u % n
+    return inverse
 
 
 def int2base(n: int, b: int) -> List[int]:

@@ -4,10 +4,7 @@ from bcbcpy.__ import __author__
 from bcbcpy.crypto import hash_function, is_valid_hash
 from bcbcpy.utils import obj2txt
 
-try:
-    from typing import Optional
-except ModuleNotFoundError:
-    from typing_extensions import Optional
+from typing import Optional
 
 __all__ = ["InitialBlock", "Block", "MultipleBlocks"]
 
@@ -101,7 +98,7 @@ class MultipleBlocks(Block):
 
         self.blocks = blocks
 
-        super().__init__(self.data, prev_block, self.next_difficulty)
+        super().__init__(self.data, prev_block, self.next_difficulty)  # type:ignore
 
     @property
     def data(self) -> str:

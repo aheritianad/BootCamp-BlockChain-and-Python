@@ -3,7 +3,7 @@ from bcbcpy.__ import __author__
 
 from bcbcpy.crypto import Key, AsymmetricKeys
 from bcbcpy.math import (
-    is_invertible_mod,
+    inverse_mod,
     int2base,
     base2int,
     generate_probably_prime,
@@ -11,11 +11,7 @@ from bcbcpy.math import (
 from bcbcpy.utils import TOTAL_CHAR, txt2int, int2txt
 
 
-try:
-    from typing import Tuple
-except ModuleNotFoundError:
-    from typing_extensions import Tuple
-
+from typing import Tuple
 import random
 
 __all__ = [
@@ -65,8 +61,8 @@ class RSAPairKeys(AsymmetricKeys):
         random.shuffle(ds)
 
         for d in ds:
-            stop, e = is_invertible_mod(d, phi)
-            if stop:
+            e = inverse_mod(d, phi)
+            if e:  # e exist (not None)
                 break
         else:
             d = e = phi - 1  # not supposed to happened, but I still put it for security

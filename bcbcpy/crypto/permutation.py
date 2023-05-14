@@ -3,12 +3,8 @@ from bcbcpy.__ import __author__
 
 from bcbcpy.crypto.key import SymmetricKey
 
-try:
-    from typing import Tuple, List, Callable
-except ModuleNotFoundError:
-    from typing_extensions import Tuple, List, Callable
-except ModuleNotFoundError:
-    from beartype import Tuple, List, Callable
+from typing import Tuple, List, Callable
+
 
 import random
 
@@ -21,12 +17,10 @@ class PermutationKey(SymmetricKey):
         super().__init__(key_value, permutation_encoder(n_runs))
 
     def __repr__(self):
-        return (
-            f"PermutationKey({self._first.key_value}, {self._BaseKeys__sec.key_value})"
-        )
+        return f"PermutationKey({self._first.key_value})"
 
-    @classmethod
-    def compute_inverse(cls, key_value: Tuple[int, ...]) -> list[int]:
+    @staticmethod
+    def compute_inverse(key_value: Tuple[int, ...]) -> list[int]:
         new_value = [0] * len(key_value)
         for i, image in enumerate(key_value):
             new_value[image - 1] = i + 1

@@ -1,12 +1,7 @@
 from bcbcpy.__ import __author__
 
 
-try:
-    from typing import Callable, Any, Iterator
-except ModuleNotFoundError:
-    from typing_extensions import Callable, Any, Iterator
-except ModuleNotFoundError:
-    from beartype import Callable, Any, Iterator
+from typing import Callable, Any, Iterator
 
 __all__ = [
     "Key",
@@ -45,13 +40,13 @@ class BaseKeys:
         return self._first
 
     def encrypt(self, txt: str) -> str:
-        return self._first.encode()(txt)
+        return self._first.encode(txt)
 
     def decrypt(self, txt: str) -> str:
-        return self.__sec.encode()(txt)
+        return self.__sec.encode(txt)
 
     def sign(self, txt: str) -> str:
-        return self.__sec.encode()(txt)
+        return self.__sec.encode(txt)
 
 
 class SymmetricKey(BaseKeys):
