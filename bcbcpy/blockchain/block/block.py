@@ -4,6 +4,12 @@ from bcbcpy.__ import __author__
 from bcbcpy.crypto import hash_function, is_valid_hash
 from bcbcpy.utils import obj2txt
 
+try:
+    from typing import Optional
+except ModuleNotFoundError:
+    from typing_extensions import Optional
+except ModuleNotFoundError:
+    from beartype import Optional
 
 __all__ = ["InitialBlock", "Block", "MultipleBlocks"]
 
@@ -12,9 +18,9 @@ class BaseBlock:
     def __init__(
         self,
         data: str = "",
-        prev_block: "BaseBlock | None" = None,
+        prev_block: Optional["BaseBlock"] = None,
         difficulty: int = 4,
-        next_difficulty: int | None = None,
+        next_difficulty: Optional[int] = None,
     ) -> None:
         self._nonce = 0
         self.data = data
@@ -66,7 +72,7 @@ class InitialBlock(BaseBlock):
         self,
         initial_data: str = "",
         difficulty: int = 4,
-        next_difficulty: int | None = None,
+        next_difficulty: Optional[int] = None,
     ) -> None:
         super().__init__(
             data=initial_data,
@@ -79,7 +85,7 @@ class InitialBlock(BaseBlock):
 
 class Block(BaseBlock):
     def __init__(
-        self, data: str, prev_block: BaseBlock, next_difficulty: int | None = None
+        self, data: str, prev_block: BaseBlock, next_difficulty: Optional[int] = None
     ) -> None:
         super().__init__(data, prev_block, prev_block.next_difficulty, next_difficulty)
 

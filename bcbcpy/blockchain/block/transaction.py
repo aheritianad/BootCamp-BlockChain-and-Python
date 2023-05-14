@@ -6,6 +6,12 @@ from bcbcpy.node import Node
 from bcbcpy.crypto import Key
 from bcbcpy.utils import obj2txt
 
+try:
+    from typing import Optional
+except ModuleNotFoundError:
+    from typing_extensions import Optional
+except ModuleNotFoundError:
+    from beartype import Optional
 
 from datetime import datetime
 
@@ -69,7 +75,7 @@ class TransactionData:
 
 class TransactionBlock(Block):
     def __init__(
-        self, transaction_data: TransactionData, next_difficulty: int | None = None
+        self, transaction_data: TransactionData, next_difficulty: Optional[int] = None
     ) -> None:
         super().__init__(
             data=transaction_data.data,

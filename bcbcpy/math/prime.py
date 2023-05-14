@@ -1,6 +1,13 @@
 import math
 import random
 
+try:
+    from typing import Optional
+except ModuleNotFoundError:
+    from typing_extensions import Optional
+except ModuleNotFoundError:
+    from beartype import Optional
+
 
 def get_s_d(n: int) -> tuple[int, int]:
     """
@@ -108,7 +115,7 @@ def is_probably_prime(n: int, runs: int) -> bool:
     return True
 
 
-def generate_probably_prime(bit_size: int, runs: int | None = None) -> int:
+def generate_probably_prime(bit_size: int, runs: Optional[int] = None) -> int:
     assert bit_size > 0
     if runs is None:
         runs = bit_size // 4 + 1
