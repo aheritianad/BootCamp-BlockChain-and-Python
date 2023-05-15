@@ -4,7 +4,6 @@ from bcbcpy.__ import __author__
 from bcbcpy.blockchain.block import Block
 from bcbcpy.node import Node
 from bcbcpy.crypto import Key
-from bcbcpy.utils import obj2txt
 
 from typing import Optional
 
