@@ -34,10 +34,9 @@ def rsa_encoder(txt: str, key_value: Tuple[int, int]) -> str:
 
 class RSAKey(Key):
     def __init__(self, key_value: Tuple[int, int]) -> None:
-        encoder = lambda txt, key_value: rsa_encoder(txt, key_value)
         super().__init__(
             key_value,
-            encoder,
+            rsa_encoder,
         )
 
 
@@ -62,7 +61,7 @@ class RSAPairKeys(AsymmetricKeys):
 
         for d in ds:
             e = inverse_mod(d, phi)
-            if e:  # e exist (not None)
+            if e:  # e exists (not None)
                 break
         else:
             d = e = phi - 1  # not supposed to happened, but I still put it for security
