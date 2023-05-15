@@ -21,6 +21,7 @@ __all__ = [
 ]
 
 TOTAL_CHAR = 97
+"""Number of available printable characters."""
 
 C2I = {
     "\t": 0,
@@ -121,6 +122,7 @@ C2I = {
     "}": 95,
     "~": 96,
 }
+"""Dictionary with character string as key and number between 0 and 96 (inclusive) as value."""
 
 I2C = {
     0: "\t",
@@ -221,17 +223,20 @@ I2C = {
     95: "}",
     96: "~",
 }
+"""Dictionary with number between 0 and 96 (inclusive) as key and its character string as value."""
 
 
-def int2txt(num: int):
+def int2txt(n: int):
+    """Convert a decimal number `n` into base `97` using `C2I` as digits."""
     b = TOTAL_CHAR
     txt = ""
-    for d in digits(num, b):
+    for d in digits(n, b):
         txt += I2C[d]
     return txt
 
 
 def txt2int(text: str):
+    """Convert a decimal number `n` into base `97` using `C2I` as digits."""
     b = TOTAL_CHAR
     digits_base = [C2I[ch] for ch in text]
     nb = base2int(digits_base, b)
@@ -239,19 +244,21 @@ def txt2int(text: str):
 
 
 def obj2txt(obj: object, indent: int = 4, separators: Optional[Tuple[str, str]] = None):
+    """Convert a python object to a json like string."""
     return json.dumps(obj, indent=indent, separators=separators)
 
 
 def txt2obj(text: str):
+    """Convert a json like string to a python object."""
     try:
         obj = json.loads(text)
     except json.JSONDecodeError:
         obj = text
-
     return obj
 
 
 def add_noises(message: str) -> str:
+    """Add random characters between characters. The random characters will be located at the odd index of the output."""
     noisy_message = ""
     noises = list(C2I.keys())
     for c in message:
@@ -261,5 +268,6 @@ def add_noises(message: str) -> str:
 
 
 def remove_noises(noisy_message: str) -> str:
+    """Remove all characters at odd indexes of the input."""
     clean_message = noisy_message[::2]
     return clean_message
