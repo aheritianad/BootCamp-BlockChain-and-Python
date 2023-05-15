@@ -14,7 +14,6 @@ class Node(_Node):
         assets: float,
         to: "Node",
         prev_block: Block,
-        transaction_message: str = "",
     ) -> TransactionData:
         trans_data = TransactionData(assets, self, to.id, to.pub, prev_block)
         return trans_data
