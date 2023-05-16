@@ -20,7 +20,7 @@ The goal of this BootCamp is to cover the following
 
 ## Installation
 
-Run `$ pip install git+https://github.com/aheritianad/BootCamp-BlockChain-and-Python.git --use-pep517` to install the package.
+Run `$ pip3 install git+https://github.com/aheritianad/BootCamp-BlockChain-and-Python.git --use-pep517` to install the package.
 
 ## [`bcbcpy`][bcbcpy]package
 
