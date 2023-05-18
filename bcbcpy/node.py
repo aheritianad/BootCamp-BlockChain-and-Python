@@ -1,22 +1,31 @@
 from bcbcpy.__ import __author__
 
 
-from bcbcpy.crypto import Key, BaseKeys
+from bcbcpy.crypto.basekey import BaseKey as Key, BasePairKeys as PairKeys
+from bcbcpy.crypto.hash import hash_function
 from bcbcpy.utils import add_noises, remove_noises
 
 
 from typing import Optional
-import random
 
 
 __all__ = ["Node"]
 
 
 class Node:
-    def __init__(self, keys: BaseKeys, username: Optional[str] = None) -> None:
+    def __init__(self, keys: PairKeys, username: Optional[str] = None) -> None:
+        """
+        _summary_
+
+        Args:
+            keys (PairKeys): _description_
+            username (Optional[str], optional): _description_. Defaults to None.
+        """
         if username is None:
-            username = f"user_{random.random()*1e6:.0f}"
-        self.id = username
+            username = "user"
+        pub, _ = keys
+        address = hash_function(pub)
+        self.id = username + "_" + address[:2] + address[4::8]
         self.__keys = keys
 
     @property

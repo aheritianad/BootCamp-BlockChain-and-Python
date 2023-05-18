@@ -3,7 +3,7 @@ from bcbcpy.__ import __author__
 
 from bcbcpy.blockchain.block import Block
 from bcbcpy.node import Node
-from bcbcpy.crypto import Key
+from bcbcpy.crypto.basekey import BaseKey as Key
 
 from typing import Optional
 
