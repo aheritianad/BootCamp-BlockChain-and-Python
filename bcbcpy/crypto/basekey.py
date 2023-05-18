@@ -4,14 +4,14 @@ from bcbcpy.__ import __author__
 from typing import Callable, Any, Iterator
 
 __all__ = [
-    "Key",
-    "BaseKeys",
-    "SymmetricKey",
-    "AsymmetricKeys",
+    "BaseKey",
+    "BasePairKeys",
+    "BaseSymmetricKey",
+    "BaseAsymmetricKeys",
 ]
 
 
-class Key:
+class BaseKey:
     def __init__(self, key_value, encoder: Callable[[str, Any], str]) -> None:
         self.key_value = key_value
         self._conv_fcs = encoder
@@ -22,21 +22,21 @@ class Key:
     def encode(self, text: str) -> str:
         return self._conv_fcs(text, self.key_value)
 
-    def key_alike(self, key_value) -> "Key":
+    def key_alike(self, key_value) -> "BaseKey":
         assert isinstance(key_value, type(self.key_value))
         return type(self)(key_value, self._conv_fcs)
 
 
-class BaseKeys:
-    def __init__(self, first: Key, second: Key) -> None:
+class BasePairKeys:
+    def __init__(self, first: BaseKey, second: BaseKey) -> None:
         self._first = first
         self.__sec = second
 
-    def __iter__(self) -> Iterator[Key]:
+    def __iter__(self) -> Iterator[BaseKey]:
         return iter([self._first, self.__sec])
 
     @property
-    def pub(self) -> Key:
+    def pub(self) -> BaseKey:
         return self._first
 
     def encrypt(self, txt: str) -> str:
@@ -49,13 +49,12 @@ class BaseKeys:
         return self.__sec.encode(txt)
 
 
-class SymmetricKey(BaseKeys):
+class BaseSymmetricKey(BasePairKeys):
     def __init__(self, key_value, encoder: Callable[[str, Any], str]) -> None:
         inverse = self.compute_inverse(key_value)
 
-        first = Key(key_value, encoder)
-        second = Key(inverse, encoder)
-
+        first = BaseKey(key_value, encoder)
+        second = BaseKey(inverse, encoder)
         super().__init__(first, second)
 
     def __repr__(self) -> str:
@@ -74,8 +73,8 @@ class SymmetricKey(BaseKeys):
         raise NotImplementedError
 
 
-class AsymmetricKeys(BaseKeys):
-    def __init__(self, pub: Key, priv: Key) -> None:
+class BaseAsymmetricKeys(BasePairKeys):
+    def __init__(self, pub: BaseKey, priv: BaseKey) -> None:
         super().__init__(first=pub, second=priv)
 
     def __repr__(self) -> str:

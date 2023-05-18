@@ -1,6 +1,6 @@
 from bcbcpy.__ import __author__
 
-from .key import *
+from .basekey import *
 from .hash import *
 from .permutation import *
 from .caesar import *

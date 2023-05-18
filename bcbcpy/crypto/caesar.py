@@ -1,7 +1,7 @@
 from bcbcpy.__ import __author__
 
 
-from bcbcpy.crypto.key import SymmetricKey
+from bcbcpy.crypto.basekey import BaseSymmetricKey
 from bcbcpy.utils import C2I, I2C, TOTAL_CHAR
 
 
@@ -10,7 +10,7 @@ import random
 __all__ = ["CaesarKey", "caesar_encoder"]
 
 
-class CaesarKey(SymmetricKey):
+class CaesarKey(BaseSymmetricKey):
     def __init__(self, key_value: int) -> None:
         super().__init__(key_value, caesar_encoder)
 

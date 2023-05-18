@@ -1,7 +1,7 @@
 from bcbcpy.__ import __author__
 
 
-from bcbcpy.crypto.key import SymmetricKey
+from bcbcpy.crypto.basekey import BaseSymmetricKey
 
 from typing import Tuple, List, Callable
 
@@ -12,7 +12,7 @@ import random
 __all__ = ["PermutationKey", "permutation_encoder", "permute"]
 
 
-class PermutationKey(SymmetricKey):
+class PermutationKey(BaseSymmetricKey):
     def __init__(self, key_value: List[int], n_runs: int = 2) -> None:
         super().__init__(key_value, permutation_encoder(n_runs))
 
