@@ -8,7 +8,8 @@ with open("LICENSE") as f:
 
 setuptools.setup(
     name="bcbcpy",
-    version="1.0.0dev1",
+    use_git_versioner="short",
+    setup_requires=["git-versioner"],
     description="A standalone(no-third-party) crypto & blockchain demo package on python.",
     long_description=long_description,
     long_description_content_type="text/markdown",
