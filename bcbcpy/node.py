@@ -25,7 +25,7 @@ class Node:
             username = "user"
         pub, _ = keys
         address = hash_function(pub)
-        self.id = username + "_" + address[:2] + address[4::8]
+        self.id = username + "_" + address[:8]
         self.__keys = keys
 
     @property

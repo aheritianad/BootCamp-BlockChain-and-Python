@@ -3,7 +3,7 @@ from bcbcpy.__ import __author__
 
 from bcbcpy.crypto.basekey import BaseSymmetricKey
 
-from typing import Tuple, List, Callable
+from typing import List, Callable
 
 
 import random
@@ -20,7 +20,7 @@ class PermutationKey(BaseSymmetricKey):
         return f"PermutationKey({self._first.key_value})"
 
     @staticmethod
-    def compute_inverse(key_value: Tuple[int, ...]) -> list[int]:
+    def compute_inverse(key_value: List[int]) -> list[int]:
         new_value = [0] * len(key_value)
         for i, image in enumerate(key_value):
             new_value[image - 1] = i + 1
@@ -33,7 +33,7 @@ class PermutationKey(BaseSymmetricKey):
         return PermutationKey(pub, n_runs)
 
 
-def permute(text: str, key_value: Tuple[int, ...]) -> str:
+def permute(text: str, key_value: List[int]) -> str:
     encoded_text = ""
     n = len(key_value)
     lt = len(text)
@@ -44,10 +44,10 @@ def permute(text: str, key_value: Tuple[int, ...]) -> str:
     return encoded_text + text[n * (lt // n) :]
 
 
-def permutation_encoder(n: int = 2) -> Callable[[str, Tuple[int, ...]], str]:
+def permutation_encoder(n: int = 2) -> Callable[[str, List[int]], str]:
     assert n == 1 or n % 2 == 0, "n needs to be 1 or an evn number."
 
-    def _permute(text: str, key_value: Tuple[int, ...]) -> str:
+    def _permute(text: str, key_value: List[int]) -> str:
         for _ in range(n):
             text = permute(text, key_value)[::-1]
         return text[::-1]

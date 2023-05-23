@@ -14,17 +14,17 @@ __all__ = [
 class BaseKey:
     def __init__(self, key_value, encoder: Callable[[str, Any], str]) -> None:
         self.key_value = key_value
-        self._conv_fcs = encoder
+        self._enc_fct = encoder
 
     def __repr__(self) -> str:
         return str(self.key_value)
 
     def encode(self, text: str) -> str:
-        return self._conv_fcs(text, self.key_value)
+        return self._enc_fct(text, self.key_value)
 
     def key_alike(self, key_value) -> "BaseKey":
         assert isinstance(key_value, type(self.key_value))
-        return type(self)(key_value, self._conv_fcs)
+        return type(self)(key_value, self._enc_fct)
 
 
 class BasePairKeys:
@@ -46,7 +46,7 @@ class BasePairKeys:
         return self.__sec.encode(txt)
 
     def sign(self, txt: str) -> str:
-        return self.__sec.encode(txt)
+        return self.decrypt(txt)
 
 
 class BaseSymmetricKey(BasePairKeys):
@@ -64,8 +64,8 @@ class BaseSymmetricKey(BasePairKeys):
         else:
             return f"{self.__class__.__name__}({self._first.key_value}, {self__sec_key_value})"
 
-    @classmethod
-    def compute_inverse(cls, key_value: Any):
+    @staticmethod
+    def compute_inverse(key_value: Any):
         return key_value
 
     @staticmethod

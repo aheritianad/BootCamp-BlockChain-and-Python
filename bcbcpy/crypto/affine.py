@@ -23,8 +23,8 @@ class AffineKey(BaseSymmetricKey):
     def __repr__(self) -> str:
         return f"AffineKey({self._first.key_value[0]},{self._first.key_value[1]})"
 
-    @classmethod
-    def compute_inverse(cls, key_value: Tuple[int, int]) -> Tuple[int, int]:
+    @staticmethod
+    def compute_inverse(key_value: Tuple[int, int]) -> Tuple[int, int]:
         a = inverse_mod(key_value[0], TOTAL_CHAR)
         if a is None:
             raise ValueError(

@@ -49,22 +49,33 @@ class RSAPairKeys(BaseAsymmetricKeys):
         return f"RSAPairKeys({self._first}, HIDDEN_KEY)"
 
     @staticmethod
-    def generate_pairs(bit_size: int = 16) -> "RSAPairKeys":
+    def generate_pairs(bit_size: int = 16, use_d_17: bool = False) -> "RSAPairKeys":
         assert bit_size > 4
         p = generate_probably_prime(bit_size // 2 + 1)
         q = generate_probably_prime(bit_size // 2 - 1)
         n = p * q
         phi = (p - 1) * (q - 1)
+        if not use_d_17:
+            ds = list(range(phi // 4, 3 * phi // 4))
+            random.shuffle(ds)
 
-        ds = list(range(phi // 4, 3 * phi // 4))
-        random.shuffle(ds)
-
-        for d in ds:
-            e = inverse_mod(d, phi)
-            if e:  # e exists (not None)
-                break
+            for d in ds:
+                e = inverse_mod(d, phi)
+                if e:  # e exists (not None)
+                    break
+            else:
+                # not supposed to happened, but I still put it for security
+                d = e = phi - 1
         else:
-            d = e = phi - 1  # not supposed to happened, but I still put it for security
+            d = 17
+            e = inverse_mod(d, phi)
+            if e is None:
+                import warnings
+
+                warnings.warn(
+                    f"17 was not a valid value. {phi - 1} will be used instead."
+                )
+                d = e = phi - 1
 
         pub = RSAKey(n, d)
         priv = RSAKey(n, e)
