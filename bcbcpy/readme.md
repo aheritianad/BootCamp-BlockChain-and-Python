@@ -17,7 +17,7 @@ bcbcpy
 │   ├── node
 │   └── typings
 ├── crypto
-│   ├── caesar
+│   ├── affine
 │   ├── hash
 │   ├── key
 │   ├── permutation
