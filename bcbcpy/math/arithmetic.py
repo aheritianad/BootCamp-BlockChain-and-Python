@@ -1,9 +1,55 @@
 from bcbcpy.__ import __author__
 
 
-from typing import List, Union
+from typing import List, Union, TypeVar, Optional
 
-__all__ = ["get_s_d", "extended_gcd", "inverse_mod", "int2base", "base2int", "digits"]
+__all__ = [
+    "fast_exponentiation",
+    "fast_multiplication",
+    "get_s_d",
+    "gcd",
+    "extended_euclidean_algo",
+    "inverse_mod",
+    "int2base",
+    "base2int",
+    "digits",
+]
+
+T = TypeVar("T")
+
+
+def fast_exponentiation(x: T, n: int, mod: Optional[T] = None):
+    """
+    Compute `(x^n)%mod = (x * x * ... * x)%mod`.
+
+    `x` needs to have `__mul__` and `__rmul__` implemented such that `1 * x` is equal to `x`.
+    """
+    assert not n < 0
+    out = 1
+    for i in bin(n)[2:]:
+        out *= out
+        if i == "1":
+            out *= x
+        if mod is not None:
+            out %= mod
+    return out
+
+
+def fast_multiplication(x: T, n: int, mod: Optional[T] = None):
+    """
+    Compute `(n*x)%mod = (x + x + ... + x)%mod`.
+
+    `x` needs to have `__add__` and `__radd__` implemented such that `0 + x` is equal to `x`.
+    """
+    assert not n < 0
+    out = 0
+    for i in bin(n)[2:]:
+        out += out
+        if i == "1":
+            out += x
+        if mod is not None:
+            out %= mod
+    return out
 
 
 def get_s_d(n: int) -> tuple[int, int]:
@@ -21,7 +67,17 @@ def get_s_d(n: int) -> tuple[int, int]:
     return s, d
 
 
-def extended_gcd(a: int, b: int) -> tuple[int, int, int]:
+def gcd(a: int, b: int):
+    """
+    Compute the `gcd(a,b)` using euclidean algorithm.
+    """
+    while b != 0:
+        a, b = b, a % b
+
+    return a
+
+
+def extended_euclidean_algo(a: int, b: int) -> tuple[int, int, int]:
     """
     Return `(r, u, v)` where ``gcd(a,b) = r = a*u + b*v.
     """
@@ -39,7 +95,7 @@ def inverse_mod(a: int, n: int) -> Union[int, None]:
     """
     Return the inverse of `a mod n` or `None` if it is not invertible.
     """
-    gcd, u, _ = extended_gcd(a, n)
+    gcd, u, _ = extended_euclidean_algo(a, n)
     if gcd != 1:
         inverse = None
     else:
