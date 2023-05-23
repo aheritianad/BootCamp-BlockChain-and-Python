@@ -12,6 +12,15 @@ import random
 __all__ = ["AffineKey", "affine_encoder"]
 
 
+def affine_encoder(text: str, key_value: Tuple[int, int]) -> str:
+    a, b = key_value
+    encoded_text = ""
+    for c in text:
+        x = C2I[c]
+        encoded_text += I2C[(a * x + b) % TOTAL_CHAR]
+    return encoded_text
+
+
 class AffineKey(BaseSymmetricKey):
     def __init__(self, key_value: Tuple[int, int] = (1, 0)) -> None:
         if inverse_mod(key_value[0], TOTAL_CHAR) is None:
@@ -35,16 +44,10 @@ class AffineKey(BaseSymmetricKey):
 
     @staticmethod
     def generate_key() -> "AffineKey":
-        while (a := random.randint(1, TOTAL_CHAR - 1)) is None:
-            pass
+        while True:
+            a = random.randint(1, TOTAL_CHAR - 1)
+            if inverse_mod(a, TOTAL_CHAR) is not None:
+                break
         b = random.randint(1, TOTAL_CHAR - 1)
-        return AffineKey((a, b))
-
-
-def affine_encoder(text: str, key_value: Tuple[int, int]) -> str:
-    a, b = key_value
-    encoded_text = ""
-    for c in text:
-        x = C2I[c]
-        encoded_text += I2C[(a * x + b) % TOTAL_CHAR]
-    return encoded_text
+        key_value = (a, b)
+        return AffineKey(key_value)
