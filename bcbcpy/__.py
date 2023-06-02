@@ -3,7 +3,7 @@ from json import dumps as _dumps
 __annotations__ = {
     "repository": {
         "name": "bcbcpy",
-        "url": "https://github.com/aheritianad/BootCamp-BlockChain-and-Python/scr/bcbcpy",
+        "url": "https://github.com/aheritianad/BootCamp-BlockChain-and-Python/bcbcpy",
     },
     "tutorial": {
         "notebook": "https://github.com/aheritianad/BootCamp-BlockChain-and-Python/tuto/demo.ipynb",
